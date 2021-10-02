@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+node_modules
+ncp-debug.log
+npm-debug.log
+bower_component
+src/config/configSec.js
+
+
 # Distribution / packaging
 .Python
 build/
