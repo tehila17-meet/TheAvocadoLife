@@ -1,6 +1,8 @@
 from pyArango import connection, database, collection, document, graph
 from arango_handler.arango_config import ArangoConfig
 from arango_handler.consts import ArangoErrorMessages, BaseCollections
+from arango_handler.queries import ArangoQueries
+
 
 class ArangoHandler:
     def __init__(self) -> None:
@@ -25,7 +27,10 @@ class ArangoHandler:
     def get_collection_obj(self, collection_name: str) -> collection.Collection:
         collection_obj = self.database_object.collections.get(collection_name)
         return collection_obj if collection_obj != None else ArangoErrorMessages.COLLECTION_DOES_NOT_EXIST.format(collection_name)
-     
+    
+    def get_collection_names(self, must_include: str = str()):
+        return self.database_object.fetch_list(ArangoQueries.FILTERED_COLLECTION_NAMES.format(must_include=must_include))
+
     def create_edge_link(self, entry: document.Document, affected_document: document.Document):
         new_edge = self.caused_arango_collection.createEdge()
         new_edge.links(entry, affected_document)
