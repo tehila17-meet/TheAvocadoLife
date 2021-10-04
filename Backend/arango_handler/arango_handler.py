@@ -3,6 +3,7 @@ from arango_handler.arango_config import ArangoConfig
 from arango_handler.consts import ArangoErrorMessages, BaseCollections
 from arango_handler.queries import ArangoQueries
 
+cert = connection.CA_Certificate(ArangoConfig.ENCODED_CA, encoded=True)
 
 class ArangoHandler:
     def __init__(self) -> None:
@@ -50,5 +51,5 @@ class ArangoHandler:
 
     @property
     def arango_connection(self) -> connection.Connection:
-        return connection.Connection(username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD)
+        return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD, verify=cert)
 
