@@ -3,10 +3,10 @@ from arango_handler.arango_config import ArangoConfig
 from arango_handler.consts import ArangoErrorMessages, BaseCollections
 from arango_handler.queries import ArangoQueries
 
-cert = connection.CA_Certificate(ArangoConfig.ENCODED_CA, encoded=True)
 
 class ArangoHandler:
     def __init__(self) -> None:
+        self.connection_certificate = connection.CA_Certificate(ArangoConfig.ENCODED_CA, encoded=True)
         self.trait_arango_collection = self.get_collection_obj(BaseCollections.THE_AFFECTED_COLLECTION)
         self.caused_arango_collection = self.get_collection_obj(BaseCollections.CAUSED_COLLECTION)
 
@@ -51,5 +51,5 @@ class ArangoHandler:
 
     @property
     def arango_connection(self) -> connection.Connection:
-        return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD, verify=cert)
+        return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD, verify=self.connection_certificate)
 

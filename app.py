@@ -25,7 +25,7 @@ def index():
 def get_document_names(collection_name):
     arango_collection = master_arango_handler.get_collection_obj(collection_name)
     all_documents = arango_collection.fetchAll()
-    return {KeywordConsts.RESULT_KEYWORD: [document.Title if document.Title else document._key for document in all_documents]}
+    return {KeywordConsts.RESULT_KEYWORD: [document.title if document.title else document._key for document in all_documents]}
 
 @app.route("/get_collection_names/<string:must_include>")
 def get_collection_names(must_include):
