@@ -10,6 +10,8 @@ cors = CORS(app)
 TEST_COLLECTION = "defining_traits"
 master_arango_handler = ArangoHandler()
 
+
+
 @app.route("/")
 def index():
     arango_collection = master_arango_handler.get_collection_obj(TEST_COLLECTION)

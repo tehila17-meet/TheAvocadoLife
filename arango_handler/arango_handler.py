@@ -6,7 +6,7 @@ from arango_handler.queries import ArangoQueries
 
 class ArangoHandler:
     def __init__(self) -> None:
-        self.connection_certificate = connection.CA_Certificate(ArangoConfig.ENCODED_CA, encoded=True)
+        #self.connection_certificate = connection.CA_Certificate(ArangoConfig.ENCODED_CA, encoded=True)
         self.trait_arango_collection = self.get_collection_obj(BaseCollections.THE_AFFECTED_COLLECTION)
         self.caused_arango_collection = self.get_collection_obj(BaseCollections.CAUSED_COLLECTION)
 
@@ -23,7 +23,11 @@ class ArangoHandler:
 
     def get_trait_key_by_title(self, trait_title: str) -> str:
         all_documents = self.trait_arango_collection.fetchAll()
-        return [document._key for document in all_documents if document.title == trait_title.lower() or document.title == trait_title.upper()][0]
+        print(all_documents)
+        print(trait_title)
+        for docd in all_documents:
+            print(docd.title, docd._key)
+        return [document._key for document in all_documents if str(document.title).lower() == trait_title.lower()][0]
     
     def get_collection_obj(self, collection_name: str) -> collection.Collection:
         collection_obj = self.database_object.collections.get(collection_name)
@@ -51,5 +55,5 @@ class ArangoHandler:
 
     @property
     def arango_connection(self) -> connection.Connection:
-        return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD, verify=self.connection_certificate)
+        return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD)
 
