@@ -1,8 +1,9 @@
 from pyArango import connection, database, collection, document, graph
 from arango_handler.arango_config import ArangoConfig
-from arango_handler.consts import ArangoErrorMessages, BaseCollections
+from arango_handler.consts import ArangoErrorMessages, BaseCollections, CacheConsts
 from arango_handler.queries import ArangoQueries
-
+from arango_handler.utils import read_cached_file, update_cached_file
+import os
 
 class ArangoHandler:
     def __init__(self) -> None:
@@ -34,7 +35,14 @@ class ArangoHandler:
         return collection_obj if collection_obj != None else ArangoErrorMessages.COLLECTION_DOES_NOT_EXIST.format(collection_name)
     
     def get_collection_names(self, must_include: str = str()):
-        return self.database_object.fetch_list(ArangoQueries.FILTERED_COLLECTION_NAMES.format(must_include=must_include))
+        if self.database_object == ArangoErrorMessages.ARANGO_CONNECTION_ERROR:
+            return self.get_cached_data(must_include)
+        else:
+            
+            collection_names = self.database_object.fetch_list(ArangoQueries.FILTERED_COLLECTION_NAMES.format(must_include=must_include))
+            file_name_by_must_include = CacheConsts.CACHED_FILES_KEYWORD_MAPPING.get(must_include)
+            update_cached_file(file_name_by_must_include, collection_names)
+            return collection_names
 
     def create_edge_link(self, entry: document.Document, affected_document: document.Document):
         new_edge = self.caused_arango_collection.createEdge()
@@ -51,9 +59,14 @@ class ArangoHandler:
 
     @property
     def database_object(self, database_name: str = ArangoConfig.MAIN_DATABASE) -> database.Database:
-        return self.arango_connection[database_name]
+        return ArangoErrorMessages.ARANGO_CONNECTION_ERROR if self.arango_connection == ArangoErrorMessages.ARANGO_CONNECTION_ERROR else self.arango_connection[database_name]
 
     @property
     def arango_connection(self) -> connection.Connection:
-        return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD)
+        try:
+            return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME, password=ArangoConfig.PASSWORD)
+        except Exception as e:
+            return ArangoErrorMessages.ARANGO_CONNECTION_ERROR
 
+    def get_cached_data(self, must_include):
+        return read_cached_file(file_name = CacheConsts.CACHED_FILES_KEYWORD_MAPPING.get(must_include))
