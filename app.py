@@ -3,8 +3,9 @@ from pyArango import document
 from arango_handler.arango_handler import ArangoHandler
 from flask_cors import CORS, cross_origin
 from consts import ApiConsts, KeywordConsts, ArangoConsts, SystemConsts
-from utils import get_document_with_date, read_file_data
+from utils import get_document_with_date, read_file_data, move_entry_to_backup
 import os
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -51,14 +52,14 @@ def save_entries():
 def add_entries():
     if check_arango_connectivity():
 
-
         for root, _, files in os.walk(SystemConsts.BASE_ENTRIES_DIR):
             for file in files:
                 full_path = os.path.join(root, file)
                 entry_data = read_file_data(full_path)
                 collection_name, defining_traits = entry_data.get(ApiConsts.AFFECTING_COLLECTION_KEY), entry_data.get(ApiConsts.AFFECTED_COLLECTION_KEY)
                 master_arango_handler.add_new_entry(collection_name, entry_data, defining_traits)
-
+                move_entry_to_backup(full_path, file)
+                
         return "Added Entry"    
     return ArangoConsts.ARANGO_CONNECTION_ERROR
 
