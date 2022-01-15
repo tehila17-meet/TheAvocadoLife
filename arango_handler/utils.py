@@ -15,4 +15,4 @@ def read_cached_file(file_name):
 def update_cached_file(file_name, updated_data):
     with open(os.path.join(CacheConsts.BASE_CACHE_DIR, '') + file_name, "w") as cache_file:
             cache_file.write(str(updated_data))
-   
+
