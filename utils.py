@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from consts import SystemConsts
 import shutil
+import os
 
 def get_document_with_date(document_data: dict) -> dict:
     today = datetime.today()
@@ -13,4 +14,4 @@ def read_file_data(file_path: str) -> dict:
         return json.loads(entry_data_file.read())
 
 def move_entry_to_backup(file_name, full_path):
-    shutil.move(full_path, SystemConsts.BACKUP_ENTRIES_DIR+file_name)
+    shutil.move(full_path, os.getcwd() +SystemConsts.BACKUP_ENTRIES_DIR+file_name)

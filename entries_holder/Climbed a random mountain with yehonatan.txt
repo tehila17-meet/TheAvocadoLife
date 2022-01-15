@@ -1,1 +1,0 @@
-{"affected_collection": "Affecting-Events", "defining_traits": ["Free Spirit", "self_confidence"], "impact_rating": "8", "insertion_date": "Sat, 08 Jan 2022 16:01:56 GMT", "title": "Climbed a random mountain with yehonatan"}

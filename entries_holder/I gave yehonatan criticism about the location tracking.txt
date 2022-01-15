@@ -1,1 +1,0 @@
-{"affected_collection": "Affecting-Thoughts", "defining_traits": ["judgemental"], "impact_rating": "5", "insertion_date": "Sun, 09 Jan 2022 09:51:51 GMT", "title": "I gave yehonatan criticism about the location tracking"}

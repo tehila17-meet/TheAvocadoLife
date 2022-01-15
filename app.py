@@ -41,7 +41,7 @@ def save_entries():
     entry_title = entry_data.get(ApiConsts.ENTRY_TITLE_KEY)
     base_document_data = get_document_with_date(entry_data)
 
-    with open(os.path.join(SystemConsts.BASE_ENTRIES_DIR, '') + str(entry_title) + ".txt", "w") as entry_data_file:
+    with open(os.path.join(os.getcwd() + SystemConsts.BASE_ENTRIES_DIR, '') + str(entry_title) + ".txt", "w") as entry_data_file:
         print(entry_data_file)
         entry_data_file.write(json.dumps(base_document_data))
         

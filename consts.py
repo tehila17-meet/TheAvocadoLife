@@ -4,8 +4,8 @@ class ApiConsts:
     ENTRY_TITLE_KEY = "title"
 
 class SystemConsts:
-    BASE_ENTRIES_DIR = "C:\\Users\\Tehila\\Desktop\\Avocado\\Backend\\entries_holder\\"
-    BACKUP_ENTRIES_DIR = "C:\\Users\\Tehila\\Desktop\Avocado\\Backend\\entry_backups\\"
+    BASE_ENTRIES_DIR = "\\entries_holder\\"
+    BACKUP_ENTRIES_DIR = "\\entry_backups\\"
 
 class ArangoConsts:
     ARANGO_CONNECTION_ERROR = "Error Connection To Arango"
