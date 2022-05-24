@@ -3,9 +3,6 @@ class ArangoErrorMessages:
     ARANGO_CONNECTION_ERROR = "Error Connection To Arango"
 
 class BaseCollections:
-    THE_AFFECTED_COLLECTION = "Defining-Traits"
+    DEFINING_TRAIT_KEY = "Defining-Traits"
     CAUSED_COLLECTION = "Caused"
 
-class CacheConsts:
-    CACHED_FILES_KEYWORD_MAPPING = {"Defining-Traits" : "defining_traits_cache.txt"}
-    BASE_CACHE_DIR = "\\Cache\\"

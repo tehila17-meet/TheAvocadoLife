@@ -1,31 +1,33 @@
 from pyArango import connection, database, collection, document, graph
 from arango_handler.arango_config import ArangoConfig
-from arango_handler.consts import ArangoErrorMessages, BaseCollections, CacheConsts
+from arango_handler.consts import ArangoErrorMessages, BaseCollections
 from arango_handler.queries import ArangoQueries
-from arango_handler.utils import read_cached_file, update_cached_file
+from cache.cache_utils import read_cached_file, update_cached_file, get_cached_data
 import os
+from errors import InvalidArangoEntry
+from arango_handler.arango_creator import ArangoCreator
+from arango_handler.arango_objs.arango_prep_document import ArangoPrepDocument
 
 class ArangoHandler:
-    def __init__(self) -> None:
+    def __init__(self, arango_data_obj) -> None:
         #self.connection_certificate = connection.CA_Certificate(ArangoConfig.ENCODED_CA, encoded=True)
-        self.trait_arango_collection = self.get_collection_obj(BaseCollections.THE_AFFECTED_COLLECTION)
+        self.defining_trait_arango = self.get_collection_obj(BaseCollections.DEFINING_TRAIT_KEY)
         self.caused_arango_collection = self.get_collection_obj(BaseCollections.CAUSED_COLLECTION)
+        self.arango_data_obj = arango_data_obj
 
-    def add_new_entry(self, collection_name: str, base_document_data: dict, defining_traits: list):
-        arango_collection = self.get_collection_obj(collection_name)
-        new_document = arango_collection.createDocument(base_document_data)
-        self.validate_and_save_doc(new_document)
-        self.create_all_relationships(new_document, defining_traits)
-    
-    def create_new_relationship(self, new_entry: document.Document, defining_trait: str):
-        defining_traits_key = self.get_trait_key_by_title(defining_trait)
-        defining_traits_document = self.trait_arango_collection.fetchDocument(defining_traits_key)
-        self.create_edge_link(new_entry, defining_traits_document)
+
+    def handle_creation(self, creation_type: str, prep_document_obj: ArangoPrepDocument):
+        creation_mapping = {"entry" : ArangoCreator.create_entry, "relationship" : ArangoCreator.create_relationship,
+                            "relationships" : ArangoCreator.create_all_relationships,
+                            "edge_link" : ArangoCreator.create_edge_link}
+
+        arango_creator = creation_mapping.get(creation_type)
+        if arango_creator:
+            arango_creator(prep_document_obj)
 
     def get_trait_key_by_title(self, trait_title: str) -> str:
         all_documents = self.trait_arango_collection.fetchAll()
-        print(all_documents)
-        print(trait_title)
+
         for docd in all_documents:
             print(docd.title, docd._key)
         return [document._key for document in all_documents if str(document.title).lower() == trait_title.lower()][0]
@@ -36,7 +38,7 @@ class ArangoHandler:
     
     def get_collection_names(self, must_include: str = str()):
         if self.database_object == ArangoErrorMessages.ARANGO_CONNECTION_ERROR:
-            return self.get_cached_data(must_include)
+            return get_cached_data(must_include)
         else:
             
             collection_names = self.database_object.fetch_list(ArangoQueries.FILTERED_COLLECTION_NAMES.format(must_include=must_include))
@@ -51,7 +53,10 @@ class ArangoHandler:
 
     def validate_and_save_doc(self, doc: document.Document):
         if doc.validate():
+            print("AFTER VALIDATION")
             doc.save()
+        else:
+            raise InvalidArangoEntry
 
     def create_all_relationships(self, doc: document.Document, all_affected_doc_names: list):
            for definig_trait in all_affected_doc_names:
