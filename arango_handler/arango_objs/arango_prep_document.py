@@ -1,9 +1,12 @@
 from dataclasses import dataclass
 from typing import List
+
 from pyArango import document
 
+
+
 @dataclass
-class ArangoPrepDocument():
+class ArangoPrepDocument:
     affecting_collection: str
     title: str
     impact_rating: int

@@ -4,5 +4,5 @@ class ArangoErrorMessages:
 
 class BaseCollections:
     DEFINING_TRAIT_KEY = "Defining-Traits"
-    CAUSED_COLLECTION = "Caused"
+    AFFECTING_COLLECTION_KEY = "Caused"
 

@@ -5,6 +5,9 @@ class SystemConsts:
 class ArangoConsts:
     ARANGO_CONNECTION_ERROR = "Error Connection To Arango"
     ARANGO_CONNECTION_SUCCESS_MSG = "Welcome to the avocado life. Connection To Arango Is Established"
+    ENTRY_CREATION_TYPE = "Entry"
+    DOCUMENTS_KEYWORD = "documents"
+    COLLECTION_KEYWORD = "collections"
     
 class KeywordConsts:
     RESULT_KEYWORD = "result"
