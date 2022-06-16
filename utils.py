@@ -4,13 +4,14 @@ from consts import EntryConsts, ArangoConsts
 
 
 def check_arango_connectivity(arango_handler):
-    return False if arango_handler.arango_connection == ArangoConsts.ARANGO_CONNECTION_ERROR else True
+    connection_status = arango_handler.arango_connection
+    return connection_status if ArangoConsts.ARANGO_CONNECTION_ERROR in str(connection_status) else 1
 
 
-def remove_added_entries(session, db_name: str) -> None:
-    added_entries = session.query(db_name).filter_by(sentToDestination=EntryConsts.SENT_TO_DESTINATION_STATUS).all()
-    for added_entry in added_entries:
-        session.delete(added_entry)
+def remove_sent_entries(session, db_name) -> None:
+    sent_entries = session.query(db_name).filter_by(sentToDestination=EntryConsts.SENT_TO_DESTINATION_STATUS).all()
+    for sent_entry in sent_entries:
+        session.delete(sent_entry)
         session.commit()
 
 

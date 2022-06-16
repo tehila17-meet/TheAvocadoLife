@@ -20,8 +20,13 @@ class EntryConsts:
     INSERTION_DATE_KEY = "insertion_date"
     ENTRY_TITLE_KEY = "title"
     IMPACT_RATING_KEY = "impact_rating"
+    DEFINING_TRAITS_DELIMITER = ","
 
 class StatusConsts:
     SAVED_ENTRY = "saved_entry"
     ADDED_NEW_ENTRY = "Added New Entry"
     SENT_TO_ARANGO = "Sent Entries To Arango"
+
+class SiteConsts:
+    GET_METHOD = "GET"
+    POST_METHOD = "POST"
