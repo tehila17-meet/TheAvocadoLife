@@ -1,17 +1,19 @@
-from datetime import datetime
-import json
-from consts import SystemConsts
-import shutil
-import os
+from typing import List
 
-def get_document_with_date(document_data: dict) -> dict:
-    today = datetime.today()
-    document_data["insertion_date"] = today
-    return document_data
+from consts import EntryConsts, ArangoConsts
 
-def read_file_data(file_path: str) -> dict:
-    with open(file_path, "r") as entry_data_file:
-        return json.loads(entry_data_file.read())
 
-def move_entry_to_backup(file_name, full_path):
-    shutil.move(full_path, os.getcwd() +SystemConsts.BACKUP_ENTRIES_DIR+file_name)
+def check_arango_connectivity(arango_handler):
+    connection_status = arango_handler.arango_connection
+    return connection_status if ArangoConsts.ARANGO_CONNECTION_ERROR in str(connection_status) else 1
+
+
+def remove_sent_entries(session, db_name) -> None:
+    sent_entries = session.query(db_name).filter_by(sentToDestination=EntryConsts.SENT_TO_DESTINATION_STATUS).all()
+    for sent_entry in sent_entries:
+        session.delete(sent_entry)
+        session.commit()
+
+
+def listify_data(data: str) -> List:
+    return str(data).split()
