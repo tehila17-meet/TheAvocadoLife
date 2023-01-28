@@ -81,4 +81,4 @@ def add_entries():
 
 if __name__ == '__main__':
     executor.submit(run_arango_db)
-    app.run(host="127.0.0.1", port=5003, debug=True)
+    app.run(host="0.0.0.0", port=5003, debug=True)
