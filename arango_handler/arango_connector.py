@@ -10,7 +10,7 @@ class ArangoConnector:
     @staticmethod
     def initiate_arango_connection() -> Union[connection.Connection, str]:
         try:
-            return connection.Connection(arangoURL=ArangoConfig.ARANGO_HOST, username=ArangoConfig.USERNAME,
+            return connection.Connection(arangoURL=ArangoConfig.ARANGO_LOCAL_HOST, username=ArangoConfig.USERNAME,
                                          password=ArangoConfig.PASSWORD)
         except Exception as e:
             return ArangoErrorMessages.ARANGO_CONNECTION_ERROR.format(error_reason=e)
