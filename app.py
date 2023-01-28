@@ -1,9 +1,11 @@
 import json
+import time
 from datetime import datetime
 
 from flask import Flask, request, json
 from flask_cors import CORS, cross_origin
-
+from concurrent.futures import ThreadPoolExecutor
+import os
 from arango_handler.arango_handler import ArangoHandler
 from arango_handler.arango_objs.arango_prep_document import ArangoPrepDocument
 from consts import EntryConsts, KeywordConsts, ArangoConsts, StatusConsts
@@ -12,6 +14,7 @@ from utils import check_arango_connectivity, remove_sent_entries
 
 app = Flask(__name__)
 cors = CORS(app)
+executor = ThreadPoolExecutor(1)
 main_arango_handler = ArangoHandler()
 
 
@@ -20,6 +23,8 @@ def is_arango_connected():
     arango_connectivity_status = check_arango_connectivity(main_arango_handler)
     return ArangoConsts.ARANGO_CONNECTION_SUCCESS_MSG if arango_connectivity_status == 1 else arango_connectivity_status
 
+def run_arango_db():
+    os.system("start /b arango_server//usr//bin//arangod.exe")
 
 @app.route("/get_document_names/<string:collection_name>", methods=["GET", "POST"])
 @cross_origin()
@@ -75,4 +80,5 @@ def add_entries():
 
 
 if __name__ == '__main__':
+    executor.submit(run_arango_db)
     app.run(host="127.0.0.1", port=5003, debug=True)
