@@ -1,1 +1,1 @@
-[{'_id': '1172987', 'name': 'Affecting-Compliments'}, {'_id': '9709', 'name': 'Affecting-Criticism'}, {'_id': '11157', 'name': 'Affecting-Desires'}, {'_id': '9702', 'name': 'Affecting-Events'}, {'_id': '9678', 'name': 'Affecting-Feelings'}, {'_id': '9687', 'name': 'Affecting-Thoughts'}]
+[{'_id': '1172987', 'name': 'Affecting-Compliment'}, {'_id': '9709', 'name': 'Affecting-Criticism'}, {'_id': '11157', 'name': 'Affecting-Desire'}, {'_id': '9702', 'name': 'Affecting-Event'}, {'_id': '9678', 'name': 'Affecting-Feeling'}, {'_id': '9687', 'name': 'Affecting-Thought'}]

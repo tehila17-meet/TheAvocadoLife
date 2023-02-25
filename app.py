@@ -4,7 +4,8 @@ from datetime import datetime
 
 from flask import Flask, request, json
 from flask_cors import CORS, cross_origin
-from concurrent.futures import ThreadPoolExecutor
+import subprocess
+
 import os
 from arango_handler.arango_handler import ArangoHandler
 from arango_handler.arango_objs.arango_prep_document import ArangoPrepDocument
@@ -14,8 +15,9 @@ from utils import check_arango_connectivity, remove_sent_entries
 
 app = Flask(__name__)
 cors = CORS(app)
-executor = ThreadPoolExecutor(1)
 main_arango_handler = ArangoHandler()
+arango_exe_path = "arango_server\\usr\\bin\\arangod.exe"
+arango_process = subprocess.Popen([arango_exe_path])
 
 
 @app.route("/")
@@ -23,8 +25,7 @@ def is_arango_connected():
     arango_connectivity_status = check_arango_connectivity(main_arango_handler)
     return ArangoConsts.ARANGO_CONNECTION_SUCCESS_MSG if arango_connectivity_status == 1 else arango_connectivity_status
 
-def run_arango_db():
-    os.system("start /b arango_server//usr//bin//arangod.exe")
+
 
 @app.route("/get_document_names/<string:collection_name>", methods=["GET", "POST"])
 @cross_origin()
@@ -47,7 +48,7 @@ def save_entries_locally():
     entry_data = json.loads(request.data)
 
     new_entry = Entry(title=entry_data.get(EntryConsts.ENTRY_TITLE_KEY),
-                      affectingCollection=entry_data.get(EntryConsts.AFFECTING_COLLECTION_KEY),
+                      affectingCollection=f"Affecting-{entry_data.get(EntryConsts.AFFECTING_COLLECTION_KEY)}",
                       impactRating=entry_data.get(EntryConsts.IMPACT_RATING_KEY),
                       definingTraits=EntryConsts.DEFINING_TRAITS_DELIMITER.join(
                           entry_data.get(EntryConsts.DEFINING_TRAITS_KEY)),
@@ -70,6 +71,7 @@ def add_entries():
                                                    insertion_time=entry.insertionTime,
                                                    defining_traits=str(entry.definingTraits).split(
                                                        EntryConsts.DEFINING_TRAITS_DELIMITER))
+            print(prep_document_obj.__dict__, " prep")
             main_arango_handler.handle_creation(ArangoConsts.ENTRY_CREATION_TYPE, prep_document_obj)
 
             entry.sentToDestination = EntryConsts.SENT_TO_DESTINATION_STATUS
@@ -80,5 +82,4 @@ def add_entries():
 
 
 if __name__ == '__main__':
-    executor.submit(run_arango_db)
-    app.run(host="127.0.0.1", port=5003, debug=True)
+    app.run(debug=True)
