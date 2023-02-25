@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9e010bd3-dc0f-426d-8b33-775dde1bf85c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arango_handler/arango_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/arango_handler/arango_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cache/affecting_collections.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cache/affecting_collections.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entries/entries_database.py" beforeDir="false" afterPath="$PROJECT_DIR$/entries/entries_database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entriesDatabase.db" beforeDir="false" afterPath="$PROJECT_DIR$/entriesDatabase.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -321,7 +316,7 @@
       <updated>1651814934638</updated>
       <workItem from="1673013338791" duration="1006000" />
       <workItem from="1674888151369" duration="7103000" />
-      <workItem from="1676652482023" duration="7312000" />
+      <workItem from="1676652482023" duration="7372000" />
     </task>
     <task id="LOCAL-00001" summary="Added Arango Server">
       <created>1674894154456</created>
