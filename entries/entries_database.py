@@ -15,9 +15,8 @@ class Entry(Base):
     definingTraits = Column(String)
     insertionTime = Column(DateTime)
     sentToDestination = Column(Integer)  # 1 is for sent, 0 for not yet sent
-
-
-engine = create_engine('sqlite:///entriesDatabase.db', connect_args={'check_same_thread': False})
+#sqlite:///entriesDatabase.db
+engine = create_engine("sqlite:///C:\\Users\\Tehila\\Desktop\\Avocado\\Backend\\entriesDatabase.db", connect_args={'check_same_thread': False})
 Base.metadata.create_all(engine)
 
 DBSession = sessionmaker(bind=engine, autoflush=False)
