@@ -16,6 +16,7 @@ from utils import check_arango_connectivity, remove_sent_entries
 app = Flask(__name__)
 cors = CORS(app)
 main_arango_handler = ArangoHandler()
+print(os.getcwd(), "current")
 arango_exe_path = "arango_server\\usr\\bin\\arangod.exe"
 arango_process = subprocess.Popen([arango_exe_path])
 
